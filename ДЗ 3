@@ -1,0 +1,45 @@
+Модуль, который реализует сравнение строк:
+
+def compare(S1,S2):
+    ngrams = [S1[i:i+3] for i in range(len(S1))]
+    count = 0
+    for ngram in ngrams:
+        count += S2.count(ngram)
+        return count/max(len(S1), len(S2))
+
+pairs = [
+    ('kitten','sitting'),
+    ('saturday','sunday'),
+    ('море','гора'),
+    ('компьютер','компьютеризация'),
+    ('компьютер','компьютеры'),
+    ]
+if __name__ == "__main__":
+    for s, t in pairs:
+        print(s, t, compare(s, t))
+
+kitten sitting 0.0
+saturday sunday 0.0
+море гора 0.0
+компьютер компьютеризация 0.06666666666666667
+компьютер компьютеры 0.1
+
+def LevenshteinDistance(s, t):
+    n, m = len(t), len(s)
+    v0 = [0] * (n + 1)
+    v1 = [0] * (n + 1)
+    for i in range(n):
+        v0[i] = i
+    for i in range(m):
+        v1[0] = i + 1
+        for j in range(n):
+            deletionCost = v0[j + 1] + 1
+            insertionCost = v1[j] + 1
+            if s[i] == t[j]:
+                substitutionCost = v0[j]
+            else:
+                substitutionCost = v0[j] + 1
+            v1[j + 1] = min(deletionCost, insertionCost, substitutionCost)
+        v0, v1 = v1, v0
+    return round(v0[n], 2)
+
