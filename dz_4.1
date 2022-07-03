@@ -1,0 +1,14 @@
+from dz_4.0 import СountCompare, JaroWinklerCompare
+
+class CompareFactory():
+
+    @staticmethod
+    def create(method):
+        match method:
+            case 1:
+                return CountCompare()
+            case 2:
+                return JaroWinklerCompare()
+           
+if __name__ == '__main__':
+    print ('Рабочий метод')
