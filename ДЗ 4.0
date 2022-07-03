@@ -1,0 +1,58 @@
+#   Определила класс "Игра", у которой есть название и цена.Использовала метод  __eq__ , сравнила совпадают ли название и цена. 
+class Game:
+	def __init__(self, name, price):
+		self.name = name
+		self.price = price
+	def __eq__(self, other_game):
+		print("Обращение к __eq__!")
+		return other_game.name == self.name and other_game.price == self.price
+	game1 = Game("Cuphead", 180)
+	game2 = Game("Cuphead", 180)
+	game3 = Game("Resident Evil 2", 430)
+	if game1 == game2:
+		print("Они одинаковые")
+	else:
+		print("Они НЕ одинаковые")
+	if game1 != game3:
+		print("game 1 и game 3 - это НЕ одинаковые")
+	else:
+		print("game 1 и game 3 - это одинаковые")
+
+		
+Обращение к __eq__!
+Они одинаковые
+Обращение к __eq__!
+game 1 и game 3 - это НЕ одинаковые
+
+
+# Реализация библиотеки основана на вычислении подобия Джаро-Винклера.
+Это быстрее, чем в других библиотеках.
+
+import unittest
+from similarity.jarowinkler import JaroWinkler
+
+class CompareMaster():
+    def compare(self, S1, S2):
+        raise Exception("Метод Compare не сработал")
+        
+class CountCompare(CompareMaster):
+    def compare(self, S1, S2):
+        ngrams = [S1[i:i+3] for i in range(len(S1))]
+        count = 0
+        for ngram in ngrams:
+            count += S2.count(ngram)
+        return S1, S2, count / max(len(S1), len(S2))
+
+class JaroWinklerCompare(CompareMaster):
+    def compare(self, S1, S2):
+        return S1, S2, JaroWinkler().similarity(S1, S2)
+        if __name__ == '__main__':
+            class TestCompare (unittest.TestCase):
+                def test_CompareByMethod1(self):
+                    self.assertEqual(СountCompare.compare(self, 'море', 'гора'), ('море', 'гора', 0.0))
+                    self.assertEqual(СountCompare.compare(self, 'компьютер', 'компьютеризация'), ('компьютер', 'компьютеризация', 0.6))
+                    self.assertEqual(JaroWinklerCompare.compare(self, 'море', 'гора'), ('море', 'гора', 0.6666666666666666))
+                    self.assertEqual(JaroWinklerCompare.compare(self, 'компьютер', 'компьютеризация'), ('компьютер', 'компьютеризация', 0.9466666666666667))
+            unittest.main()
+            
+            
